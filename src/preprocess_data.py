@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 import os
 
 def load_and_clean_data(filepath):
@@ -50,6 +50,10 @@ def encode_and_scale(df, target_col='is_canceled'):
         
     y = df[target_col]
     X = df.drop(target_col, axis=1)
+    
+    # Label encode target variable to support XGBoost multiclass integer requirements
+    le = LabelEncoder()
+    y = pd.Series(le.fit_transform(y), index=y.index)
     
     categorical_cols = X.select_dtypes(include=['object']).columns
     numerical_cols = X.select_dtypes(exclude=['object']).columns
