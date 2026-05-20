@@ -34,10 +34,6 @@ def get_wrapper_methods(X, y, k=20):
     methods = {}
     actual_k = min(k, X.shape[1])
     
-    # Using Logistic Regression for speed in RFE instead of Random Forest
-    estimator = LogisticRegression(solver='liblinear', max_iter=100)
-    selector_rfe = RFE(estimator, n_features_to_select=actual_k, step=10)
-    
     # RFE can be very slow. Using a random sample for RFE if dataset is too large.
     sample_size = min(20000, len(X))
     if sample_size < len(X):
@@ -47,6 +43,15 @@ def get_wrapper_methods(X, y, k=20):
     else:
         X_sample, y_sample = X, y
         
+    # Using Logistic Regression for speed in RFE instead of Random Forest
+    # lbfgs solver natively supports multiclass, whereas liblinear does not.
+    is_multiclass = len(np.unique(y_sample)) > 2
+    if is_multiclass:
+        estimator = LogisticRegression(solver='lbfgs', max_iter=100)
+    else:
+        estimator = LogisticRegression(solver='liblinear', max_iter=100)
+        
+    selector_rfe = RFE(estimator, n_features_to_select=actual_k, step=10)
     selector_rfe.fit(X_sample, y_sample)
     methods['RFE_LogisticRegression'] = list(X.columns[selector_rfe.get_support()])
     
@@ -58,7 +63,14 @@ def get_embedded_methods(X, y, k=20):
     actual_k = min(k, X.shape[1])
     
     # Lasso (L1 Penalty)
-    lasso = LogisticRegression(penalty='l1', solver='liblinear', max_iter=100)
+    # liblinear doesn't support multiclass directly in newer scikit-learn versions, so we wrap it in OneVsRestClassifier
+    is_multiclass = len(np.unique(y)) > 2
+    if is_multiclass:
+        from sklearn.multiclass import OneVsRestClassifier
+        lasso = OneVsRestClassifier(LogisticRegression(penalty='l1', solver='liblinear', max_iter=100))
+    else:
+        lasso = LogisticRegression(penalty='l1', solver='liblinear', max_iter=100)
+        
     selector_lasso = SelectFromModel(lasso, max_features=actual_k)
     selector_lasso.fit(X, y)
     methods['Lasso'] = list(X.columns[selector_lasso.get_support()])

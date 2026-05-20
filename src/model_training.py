@@ -31,7 +31,8 @@ def train_and_evaluate(X_train, X_test, y_train, y_test, method_name, is_multicl
     
     # Model 2: XGBoost
     start_time = time.time()
-    xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss', n_jobs=-1, random_state=42)
+    metric = 'mlogloss' if is_multiclass else 'logloss'
+    xgb = XGBClassifier(eval_metric=metric, n_jobs=-1, random_state=42)
     xgb.fit(X_train, y_train)
     xgb_pred = xgb.predict(X_test)
     xgb_time = time.time() - start_time
