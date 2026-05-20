@@ -124,6 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
             configCard.classList.remove('disabled');
             detectedTargetText.textContent = 'Analyzing columns...';
 
+            // Pre-populate raw dataset columns
+            const allFeaturesCount = document.getElementById('all-features-count');
+            const allFeaturesList = document.getElementById('all-features-list');
+            if (allFeaturesCount && allFeaturesList && data.columns) {
+                allFeaturesCount.textContent = data.columns.length;
+                allFeaturesList.innerHTML = data.columns.map(f => `<span class="feature-pill" style="border-color: rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.05);">${f}</span>`).join('');
+            }
+
             // Instantly trigger optimization suite automatically without asking anything
             executeOptimizationSuite('auto');
 
@@ -147,6 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
         placeholderView.classList.remove('hidden');
         loaderView.classList.add('hidden');
         resultsView.classList.add('hidden');
+
+        // Reset features list
+        const allFeaturesCount = document.getElementById('all-features-count');
+        const allFeaturesList = document.getElementById('all-features-list');
+        if (allFeaturesCount) allFeaturesCount.textContent = '0';
+        if (allFeaturesList) allFeaturesList.innerHTML = `<span style="color: var(--text-muted); font-style: italic; font-size: 0.9rem;">No dataset uploaded yet</span>`;
     }
 
     async function executeOptimizationSuite(targetColParam = 'auto') {
@@ -284,6 +298,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('plot-accuracy').src = `${data.plots.accuracy}?t=${ts}`;
         document.getElementById('plot-f1').src = `${data.plots.f1}?t=${ts}`;
         document.getElementById('plot-time').src = `${data.plots.time}?t=${ts}`;
+
+        // Render All Features list (preprocessed)
+        const allFeaturesCount = document.getElementById('all-features-count');
+        const allFeaturesList = document.getElementById('all-features-list');
+        if (allFeaturesCount && allFeaturesList && data.all_features) {
+            allFeaturesCount.textContent = data.all_features.length;
+            allFeaturesList.innerHTML = data.all_features.map(f => `<span class="feature-pill" style="border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.05);">${f}</span>`).join('');
+        }
 
         // 3. Render Feature Subsets List Table
         const featuresTbody = document.getElementById('features-tbody');

@@ -192,6 +192,17 @@
 
                         <!-- Tab 2: Feature Sets Table -->
                         <div class="tab-pane hidden" id="tab-features">
+                            <!-- All Features Section -->
+                            <div class="dataset-features-section" style="margin-bottom: 2rem; padding: 1.5rem; border-radius: 0.8rem; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);">
+                                <h4 style="margin-top: 0; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem; color: var(--text-main); font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600;">
+                                    <i class="fa-solid fa-database" style="color: var(--accent-color);"></i> All Features Present in Dataset (<span id="all-features-count">0</span>)
+                                </h4>
+                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; margin-top: 0;">These are the features present in the uploaded dataset before selection.</p>
+                                <div id="all-features-list" style="max-height: 150px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.8rem; background: rgba(10, 11, 16, 0.4); border-radius: 0.6rem; border: 1px solid rgba(255, 255, 255, 0.03);">
+                                    <span style="color: var(--text-muted); font-style: italic; font-size: 0.9rem;">No dataset uploaded yet</span>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="custom-table" id="features-table">
                                     <thead>

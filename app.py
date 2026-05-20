@@ -126,6 +126,7 @@ def run_pipeline():
         return jsonify({
             'success': True,
             'target_col': target_col,
+            'all_features': list(X.columns),
             'selected_features': selected_features,
             'results': results,
             'plots': {
