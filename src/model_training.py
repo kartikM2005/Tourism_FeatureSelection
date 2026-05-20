@@ -50,7 +50,7 @@ def run_model_training_pipeline(X, y, selected_features):
     if isinstance(y, pd.DataFrame):
         y = y.iloc[:, 0]
         
-    X_train_full, X_test_full, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train_full, X_test_full, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     is_multiclass = len(np.unique(y)) > 2
     
     all_results = {}

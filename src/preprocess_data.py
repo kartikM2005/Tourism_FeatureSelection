@@ -48,6 +48,18 @@ def encode_and_scale(df, target_col='is_canceled'):
     if target_col not in df.columns:
         raise ValueError(f"Target column '{target_col}' not found in dataset.")
         
+    # Clean the target column: strip whitespaces if it's text
+    if not pd.api.types.is_numeric_dtype(df[target_col]):
+        df[target_col] = df[target_col].astype(str).str.strip()
+        
+    # Drop rows with target classes that have fewer than 2 samples
+    # (since we cannot stratify or evaluate them reliably)
+    class_counts = df[target_col].value_counts()
+    rare_classes = class_counts[class_counts < 2].index
+    if len(rare_classes) > 0:
+        print(f"Dropping rare target classes with < 2 samples: {list(rare_classes)}")
+        df = df[~df[target_col].isin(rare_classes)].copy()
+        
     y = df[target_col]
     X = df.drop(target_col, axis=1)
     
