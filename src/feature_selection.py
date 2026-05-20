@@ -63,7 +63,8 @@ def get_embedded_methods(X, y, k=20):
     actual_k = min(k, X.shape[1])
     
     # Lasso (L1 Penalty)
-    # liblinear doesn't support multiclass directly in newer scikit-learn versions, so we wrap it in OneVsRestClassifier
+    # liblinear doesn't support multiclass directly in newer scikit-learn versions, so we wrap it in OneVsRestClassifier.
+    # We fit the model first and use prefit=True to avoid scikit-learn's unfitted attribute check errors.
     is_multiclass = len(np.unique(y)) > 2
     if is_multiclass:
         from sklearn.multiclass import OneVsRestClassifier
@@ -71,8 +72,8 @@ def get_embedded_methods(X, y, k=20):
     else:
         lasso = LogisticRegression(penalty='l1', solver='liblinear', max_iter=100)
         
-    selector_lasso = SelectFromModel(lasso, max_features=actual_k)
-    selector_lasso.fit(X, y)
+    lasso.fit(X, y)
+    selector_lasso = SelectFromModel(lasso, max_features=actual_k, prefit=True)
     methods['Lasso'] = list(X.columns[selector_lasso.get_support()])
     
     # Random Forest Feature Importance
