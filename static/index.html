@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSelect Pro — Advanced ML Feature Optimization</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Tailored CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-mesh"></div>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-wand-magic-sparkles gradient-icon"></i>
+            <span>AutoSelect <span class="badge">PRO</span></span>
+        </div>
+        <p class="subtitle">Automated Machine Learning Feature Optimization & Benchmarking Suite</p>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- LEFT PANEL: Controls & Configuration -->
+        <section class="control-panel">
+            <!-- Step 1: Upload Card -->
+            <div class="glass-card step-card" id="upload-card">
+                <div class="card-header">
+                    <span class="step-number">01</span>
+                    <h3>Upload Dataset</h3>
+                </div>
+                <p class="card-desc">Drag and drop your input CSV file containing raw or unoptimized data features.</p>
+                
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="file-input" accept=".csv, .xlsx, .xls" hidden>
+                    <div class="dropzone-content">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <span class="dropzone-text">Click to browse or drop CSV / Excel here</span>
+                        <span class="dropzone-subtext">Supports CSV & Excel (.xlsx, .xls) files</span>
+                    </div>
+                </div>
+                <div id="file-info" class="file-info hidden">
+                    <i class="fa-solid fa-file-csv file-icon"></i>
+                    <div class="file-details">
+                        <span id="file-name" class="file-name">filename.csv</span>
+                        <span id="file-status" class="status-badge success">Ready</span>
+                    </div>
+                    <button id="remove-file-btn" class="icon-btn" title="Remove File"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 2: Automated AI Engine Parameters -->
+            <div class="glass-card step-card disabled" id="config-card">
+                <div class="card-header">
+                    <span class="step-number">02</span>
+                    <h3>AI Auto-Configuration</h3>
+                </div>
+                <p class="card-desc">Parameters automatically inferred from input data structure.</p>
+                
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Detected Target Prediction Column</label>
+                    <div class="status-badge" id="detected-target-badge" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: rgba(59, 130, 246, 0.15); color: #3b82f6; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-microchip"></i> <span id="detected-target-text">Auto-detecting...</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Subsets Optimization Depth ($K$)</label>
+                    <div class="slider-val" style="font-size: 1rem; color: var(--text-muted);">
+                        <strong>20</strong> top feature attributes per subset
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: Progress & Results Visualization -->
+        <section class="results-panel">
+            <!-- Idle Placeholder -->
+            <div class="glass-card placeholder-card" id="placeholder-view">
+                <div class="glowing-circle">
+                    <i class="fa-solid fa-chart-line-up"></i>
+                </div>
+                <h3>No Active Optimization Session</h3>
+                <p>Upload a dataset and launch the automated suite to analyze Filter, Wrapper, and Embedded performance trade-offs instantly.</p>
+            </div>
+
+            <!-- Active Loader & Progress Status -->
+            <div class="glass-card loader-card hidden" id="loader-view">
+                <div class="loader-header">
+                    <div class="spinner"></div>
+                    <h3>Executing Machine Learning Pipeline</h3>
+                </div>
+                <p class="loader-subtitle">Evaluating parallel algorithmic strategies across multiple models...</p>
+                
+                <div class="steps-progress">
+                    <div class="progress-item pending" id="step-preprocess">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Preprocessing & Imputation</h4>
+                            <span>Cleaning anomalies, encoding attributes, filling missing data</span>
+                        </div>
+                    </div>
+                    <div class="progress-item pending" id="step-filter">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Statistical Filter Methods</h4>
+                            <span>ANOVA F-value & Scaled Chi-Square extraction</span>
+                        </div>
+                    </div>
+                    <div class="progress-item pending" id="step-wrapper">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Wrapper Search Engine</h4>
+                            <span>Recursive Feature Elimination (RFE) optimization</span>
+                        </div>
+                    </div>
+                    <div class="progress-item pending" id="step-embedded">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Embedded Regularization</h4>
+                            <span>Lasso L1 convergence & Random Forest Feature Importance</span>
+                        </div>
+                    </div>
+                    <div class="progress-item pending" id="step-models">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Model Benchmarking</h4>
+                            <span>Training XGBoost & Logistic Regression matrices</span>
+                        </div>
+                    </div>
+                    <div class="progress-item pending" id="step-plots">
+                        <div class="indicator"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-text">
+                            <h4>Visual Metrics Compilation</h4>
+                            <span>Rendering high-fidelity vector outputs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fully Loaded Results Dashboard -->
+            <div class="results-dashboard hidden" id="results-view">
+                <!-- Summary KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="glass-card kpi-card">
+                        <span class="kpi-label">Top Selection Method</span>
+                        <div class="kpi-val highlight" id="best-method-name">RandomForest</div>
+                        <div class="kpi-sub"><i class="fa-solid fa-bolt"></i> Max Predictive Power</div>
+                    </div>
+                    <div class="glass-card kpi-card">
+                        <span class="kpi-label">Max Retained Accuracy</span>
+                        <div class="kpi-val" id="best-method-acc">87.9%</div>
+                        <div class="kpi-sub">vs <span id="baseline-acc">87.9%</span> Baseline</div>
+                    </div>
+                    <div class="glass-card kpi-card">
+                        <span class="kpi-label">Training Speedup</span>
+                        <div class="kpi-val success" id="best-method-speedup">~4.5x</div>
+                        <div class="kpi-sub"><i class="fa-solid fa-clock"></i> Lower latency impact</div>
+                    </div>
+                </div>
+
+                <!-- Comprehensive Results Tabs -->
+                <div class="glass-card tabs-card">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-target="tab-plots"><i class="fa-solid fa-chart-pie"></i> Visual Metrics</button>
+                        <button class="tab-btn" data-target="tab-features"><i class="fa-solid fa-list-check"></i> Selected Subsets</button>
+                        <button class="tab-btn" data-target="tab-matrix"><i class="fa-solid fa-table"></i> Complete Matrix</button>
+                    </div>
+
+                    <div class="tabs-content">
+                        <!-- Tab 1: Charts -->
+                        <div class="tab-pane active" id="tab-plots">
+                            <div class="plots-grid">
+                                <div class="plot-item">
+                                    <h4>Classifier Accuracy Comparison</h4>
+                                    <img id="plot-accuracy" src="" alt="Accuracy Plot" class="zoom-img">
+                                </div>
+                                <div class="plot-item">
+                                    <h4>F1-Score Retainability</h4>
+                                    <img id="plot-f1" src="" alt="F1 Score Plot" class="zoom-img">
+                                </div>
+                                <div class="plot-item full-width">
+                                    <h4>Computational Training Latency (Seconds)</h4>
+                                    <img id="plot-time" src="" alt="Time Comparison Plot" class="zoom-img">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Feature Sets Table -->
+                        <div class="tab-pane hidden" id="tab-features">
+                            <div class="table-responsive">
+                                <table class="custom-table" id="features-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Selection Methodology</th>
+                                            <th>Feature Count</th>
+                                            <th>Top Extracted Attributes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="features-tbody">
+                                        <!-- Dynamically generated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Matrix Raw View -->
+                        <div class="tab-pane hidden" id="tab-matrix">
+                            <div class="table-responsive">
+                                <table class="custom-table matrix-table" id="matrix-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Method</th>
+                                            <th>Model</th>
+                                            <th>Accuracy</th>
+                                            <th>F1-Score</th>
+                                            <th>Time (s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="matrix-tbody">
+                                        <!-- Dynamically generated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Image Zoom Modal -->
+    <div class="modal hidden" id="img-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+            <img id="modal-img" src="" alt="Enlarged Plot">
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script src="script.js"></script>
+</body>
+</html>

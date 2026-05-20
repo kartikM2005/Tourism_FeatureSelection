@@ -1,0 +1,74 @@
+{
+    "Baseline": {
+        "Logistic Regression": {
+            "Accuracy": 0.818932975421525,
+            "F1 Score": 0.7330736412539418,
+            "Time (s)": 6.022033452987671
+        },
+        "XGBoost": {
+            "Accuracy": 0.8795403070212231,
+            "F1 Score": 0.8337770575298067,
+            "Time (s)": 7.2124574184417725
+        }
+    },
+    "ANOVA": {
+        "Logistic Regression": {
+            "Accuracy": 0.7857142857142857,
+            "F1 Score": 0.6597855763468069,
+            "Time (s)": 0.7644810676574707
+        },
+        "XGBoost": {
+            "Accuracy": 0.8325224393926683,
+            "F1 Score": 0.7566579316228899,
+            "Time (s)": 1.2599568367004395
+        }
+    },
+    "Chi-Square": {
+        "Logistic Regression": {
+            "Accuracy": 0.7778709839778543,
+            "F1 Score": 0.6467449306296692,
+            "Time (s)": 0.7042145729064941
+        },
+        "XGBoost": {
+            "Accuracy": 0.8256018790369936,
+            "F1 Score": 0.7483964661745129,
+            "Time (s)": 1.2016017436981201
+        }
+    },
+    "RFE_LogisticRegression": {
+        "Logistic Regression": {
+            "Accuracy": 0.7655398037077427,
+            "F1 Score": 0.5559968228752978,
+            "Time (s)": 1.2548322677612305
+        },
+        "XGBoost": {
+            "Accuracy": 0.7680983138998406,
+            "F1 Score": 0.5586333519597669,
+            "Time (s)": 1.0538387298583984
+        }
+    },
+    "Lasso": {
+        "Logistic Regression": {
+            "Accuracy": 0.7637362637362637,
+            "F1 Score": 0.5442925329665884,
+            "Time (s)": 0.4229700565338135
+        },
+        "XGBoost": {
+            "Accuracy": 0.765581746497777,
+            "F1 Score": 0.5457205559619605,
+            "Time (s)": 1.0853099822998047
+        }
+    },
+    "RandomForest_Importance": {
+        "Logistic Regression": {
+            "Accuracy": 0.8012750608170456,
+            "F1 Score": 0.6966709346991037,
+            "Time (s)": 0.9873981475830078
+        },
+        "XGBoost": {
+            "Accuracy": 0.8684254676621089,
+            "F1 Score": 0.8147404476466072,
+            "Time (s)": 1.1162145137786865
+        }
+    }
+}
