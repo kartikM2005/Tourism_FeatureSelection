@@ -63,18 +63,28 @@ def get_embedded_methods(X, y, k=20):
     actual_k = min(k, X.shape[1])
     
     # Lasso (L1 Penalty)
-    # liblinear doesn't support multiclass directly in newer scikit-learn versions, so we wrap it in OneVsRestClassifier.
-    # We fit the model first and use prefit=True to avoid scikit-learn's unfitted attribute check errors.
+    # Since OneVsRestClassifier does not expose coef_ directly to SelectFromModel, 
+    # we manually extract and score the coefficients.
     is_multiclass = len(np.unique(y)) > 2
     if is_multiclass:
         from sklearn.multiclass import OneVsRestClassifier
         lasso = OneVsRestClassifier(LogisticRegression(penalty='l1', solver='liblinear', max_iter=100))
+        lasso.fit(X, y)
+        coefs = np.array([est.coef_[0] for est in lasso.estimators_])
+        importance = np.sum(np.abs(coefs), axis=0)
     else:
         lasso = LogisticRegression(penalty='l1', solver='liblinear', max_iter=100)
+        lasso.fit(X, y)
+        importance = np.abs(lasso.coef_[0])
         
-    lasso.fit(X, y)
-    selector_lasso = SelectFromModel(lasso, max_features=actual_k, prefit=True)
-    methods['Lasso'] = list(X.columns[selector_lasso.get_support()])
+    # Select non-zero features and rank by coefficient magnitude
+    non_zero_indices = np.where(importance > 1e-5)[0]
+    sorted_non_zero = non_zero_indices[np.argsort(importance[non_zero_indices])[::-1]]
+    selected_indices = sorted_non_zero[:actual_k]
+    if len(selected_indices) == 0:
+        selected_indices = np.argsort(importance)[::-1][:actual_k]
+        
+    methods['Lasso'] = list(X.columns[selected_indices])
     
     # Random Forest Feature Importance
     rf = RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42, n_jobs=-1)
